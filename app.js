@@ -11,7 +11,13 @@ app.get("/",function (req,res) {
 });
 
 app.get("/campgrounds",function (req,res) {
-    res.render("campgrounds");
+    var camps = [
+        {name:"Bedouin Star" , image:"https://media-cdn.tripadvisor.com/media/photo-m/1280/15/6f/da/a5/bedouin-star.jpg"},
+        {name:"Badry Sahara Camp" , image:"https://media-cdn.tripadvisor.com/media/photo-o/01/a2/36/a8/chozas-con-jardin.jpg"},
+        {name:"Baraka Camp" , image:"https://media-cdn.tripadvisor.com/media/photo-m/1280/14/47/e4/78/caption.jpg"},
+        {name:"Ayla Camp" , image:"https://media-cdn.tripadvisor.com/media/photo-w/0a/10/f7/4e/main-hut.jpg"}
+    ];
+    res.render("campgrounds",{camps:camps});
 });
 
 
