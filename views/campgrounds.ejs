@@ -1,18 +1,34 @@
 <%- include('partials/header');%>
 
+<header class="bg-info">
+    <div class="container text-center p-3">
+        <h1>Welcome to campgrounds Page</h1>
+        <p>View and Check our best camp grounds recommendations</p>
+        <a href="campgrounds/new" class="btn btn-light col-2 mx-auto my-2" >Add New Camp</a>
 
-<h2>Welcome to campgrounds Page</h2>
-
-
-
-<% camps.forEach(function (camp) {%>
-    <div>
-        <h3><%=camp.name%></h3>
-        <img src="<%= camp.image%>">
     </div>
-<%});%>
+</header>
+
+<section >
+    <div class="container">
+
+        <div class="row no-gutters">
+            <% camps.forEach(function (camp) {%>
+            <div class="col col-12 col-md-6 col-lg-4 ">
+                <div class="card m-2g">
+                    <div class="card-body m-2">
+                        <h3 class="card-title"><%=camp.name%></h3>
+                    </div>
+                    <img class="card-img-top" src="<%= camp.image%>">
+                </div>
+
+            </div>
+            <%});%>
+        </div>
+
+    </div>
+</section>
 
 
-<a href="campgrounds/new">Add New Camp</a>
 
 <%- include('partials/footer');%>
