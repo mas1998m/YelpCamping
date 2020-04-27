@@ -2,25 +2,65 @@ var express = require("express");
 var app = express();
 var request = require("request");
 var bodyParser = require("body-parser");
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+
+mongoose.connection.on('connected',function () {
+    console.log('db connected!!');
+})
 
 app.set("view engine","ejs"); //set ejs as the default view engine
 app.use(express.static('public')); //use "public" directory as the assets directory
 app.use(bodyParser.urlencoded({extended:true})); // use body-parser package to parse the post data
 
-var camps = [
-    {name:"Bedouin Star" , image:"https://media-cdn.tripadvisor.com/media/photo-m/1280/15/6f/da/a5/bedouin-star.jpg"},
-    {name:"Badry Sahara Camp" , image:"https://media-cdn.tripadvisor.com/media/photo-o/01/a2/36/a8/chozas-con-jardin.jpg"},
-    {name:"Baraka Camp" , image:"https://media-cdn.tripadvisor.com/media/photo-m/1280/14/47/e4/78/caption.jpg"},
-    {name:"Ayla Camp" , image:"https://media-cdn.tripadvisor.com/media/photo-w/0a/10/f7/4e/main-hut.jpg"}
-];
+const campSchema = new mongoose.Schema({
+    name:String,
+    image:String
+});
+
+const camp =mongoose.model("Camp",campSchema);
+
+// currentCamp.save(function (err,camp) {
+//     if(err){
+//         console.log("Error saving the Camp");
+//         console.log(err);
+//     }
+//     else{
+//         console.log(camp);
+//     }
+// });
+//
+//
+// camp.find({},function (err,camps) {
+//     if(err){
+//         console.log("Error finding the Camp");
+//         console.log(err);
+//     }
+//     else{
+//         console.log(camps);
+//     }
+// });
 
 app.get("/",function (req,res) {
     res.render("landing");
 });
 
 app.get("/campgrounds",function (req,res) {
-
-    res.render("campgrounds",{camps:camps});
+    camp.find({},function (err,foundCamps) {
+        if(err){
+            console.log("error finding Camps");
+            console.log(err);
+        }
+        else{
+            console.log("succesfully found camps");
+            res.render("campgrounds",{camps:foundCamps});
+        }
+    });
 });
 
 app.get("/campgrounds/new",function (req,res) {
@@ -28,13 +68,22 @@ app.get("/campgrounds/new",function (req,res) {
 });
 
 app.post("/campgrounds",function (req,res) {
-    //extract the form data and push it into the array
+    //extract the form data and push it into the db
     var name = req.body.name;
     var image = req.body.image;
-    camps.push({name:name,image: image});
+    camp.create({name:name,image:image},function (err,createdCamp) {
+        if(err){
+            console.log("an error happened");
+            console.log(err);
+        }
+        else{
+            console.log("Camp Created");
+            console.log(createdCamp);
 
-    //go back to the camps 
-    res.redirect("/campgrounds");
+            //go back to the camps
+            res.redirect("/campgrounds");
+        }
+    })
 });
 
 
