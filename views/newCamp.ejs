@@ -1,13 +1,24 @@
 <%- include('partials/header')%>
+<section>
+    <div class="container text-center">
+        <h1>Submit a New Camp</h1>
+        <div class="w-100">
+            <form action="/campgrounds" method="post">
+                <div class="form-group w-50 mx-auto">
+                    <input class="form-control" type="text" name="name" placeholder="Camp Name">
+                </div>
+                <div class="form-group w-50 mx-auto">
+                    <input class="form-control" type="text" name="image" placeholder="Image Url">
+                </div>
+                <div class="form-group w-50 mx-auto">
+                    <input class="form-control btn btn-danger" type="submit" value="Submit">
+                </div>
+            </form>
+            <a href="campgrounds">View Current Camps</a><br>
+            <a href="/">Go to Homepage</a>
+        </div>
 
-<h1>Submit a New Camp</h1>
-<form action="/campgrounds" method="post">
-    <input type="text" name="name" placeholder="Camp Name">
-    <input type="text" name="image" placeholder="Image Url">
-    <input type="submit" value="Submit">
-</form>
 
-<a href="campgrounds">View Current Camps</a>
-<br>
-<a href="/">Go to Homepage</a>
+    </div>
+</section>
 <%- include('partials/footer')%>
