@@ -11,24 +11,21 @@
 
 <section >
     <div class="container">
-
         <div class="row no-gutters">
             <% camps.forEach(function (camp) {%>
             <div class="col col-12 col-md-6 col-lg-4 ">
-                <div class="card m-2g">
+                <div class="card m-2">
+                    <img class="card-img-top" src="<%= camp.image%>">
+
                     <div class="card-body m-2">
                         <h3 class="card-title"><%=camp.name%></h3>
                     </div>
-                    <img class="card-img-top" src="<%= camp.image%>">
                 </div>
-
             </div>
             <%});%>
         </div>
 
     </div>
 </section>
-
-
 
 <%- include('partials/footer');%>
