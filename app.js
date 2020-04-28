@@ -77,6 +77,19 @@ app.get("/campgrounds/new",function (req,res) {
     res.render("new");
 });
 
+app.get("/campgrounds/show/:id",function (req,res) {
+    camp.findById(req.params.id,function (err,result) {
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log("Camp Found");
+            res.render("show",{camp:result});
+        }
+    });
+});
+
+
 app.post("/campgrounds",function (req,res) {
     //extract the form data and push it into the db
     var name = req.body.name;
