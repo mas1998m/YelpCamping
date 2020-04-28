@@ -20,11 +20,22 @@ app.use(bodyParser.urlencoded({extended:true})); // use body-parser package to p
 
 const campSchema = new mongoose.Schema({
     name:String,
-    image:String
+    image:String,
+    description:String
 });
 
 const camp =mongoose.model("Camp",campSchema);
 
+
+// camp.update({},{description:"Some quick example text to build on the card title and make up the bulk of the card's content."},      {multi:true},function (err,out) {
+//     if(err){
+//         console.log("error happened");
+//         console.log(err);
+//     }
+//     else{
+//         console.log(out);
+//     }
+// });
 // currentCamp.save(function (err,camp) {
 //     if(err){
 //         console.log("Error saving the Camp");
@@ -34,7 +45,6 @@ const camp =mongoose.model("Camp",campSchema);
 //         console.log(camp);
 //     }
 // });
-//
 //
 // camp.find({},function (err,camps) {
 //     if(err){
@@ -71,7 +81,8 @@ app.post("/campgrounds",function (req,res) {
     //extract the form data and push it into the db
     var name = req.body.name;
     var image = req.body.image;
-    camp.create({name:name,image:image},function (err,createdCamp) {
+    var description = req.body.description;
+    camp.create({name:name,image:image,description:description},function (err,createdCamp) {
         if(err){
             console.log("an error happened");
             console.log(err);
