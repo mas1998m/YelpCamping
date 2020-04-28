@@ -68,13 +68,13 @@ app.get("/campgrounds",function (req,res) {
         }
         else{
             console.log("succesfully found camps");
-            res.render("campgrounds",{camps:foundCamps});
+            res.render("index",{camps:foundCamps});
         }
     });
 });
 
 app.get("/campgrounds/new",function (req,res) {
-    res.render("newCamp");
+    res.render("new");
 });
 
 app.post("/campgrounds",function (req,res) {
