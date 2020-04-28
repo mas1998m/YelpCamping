@@ -77,7 +77,7 @@ app.get("/campgrounds/new",function (req,res) {
     res.render("new");
 });
 
-app.get("/campgrounds/show/:id",function (req,res) {
+app.get("/campgrounds/:id",function (req,res) {
     camp.findById(req.params.id,function (err,result) {
         if(err){
             console.log(err);
