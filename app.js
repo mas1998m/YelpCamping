@@ -3,6 +3,7 @@ var app = express();
 var request = require("request");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const camp = require("./models/camp");
 
 mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
     {
@@ -18,13 +19,7 @@ app.set("view engine","ejs"); //set ejs as the default view engine
 app.use(express.static('public')); //use "public" directory as the assets directory
 app.use(bodyParser.urlencoded({extended:true})); // use body-parser package to parse the post data
 
-const campSchema = new mongoose.Schema({
-    name:String,
-    image:String,
-    description:String
-});
 
-const camp =mongoose.model("Camp",campSchema);
 
 
 // camp.update({},{description:"Some quick example text to build on the card title and make up the bulk of the card's content."},      {multi:true},function (err,out) {
