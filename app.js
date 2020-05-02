@@ -4,7 +4,7 @@ var request = require("request");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const camp = require("./models/camp");
-
+var seeds = require("./seeds");
 mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
     {
         useNewUrlParser: true,
@@ -19,7 +19,7 @@ app.set("view engine","ejs"); //set ejs as the default view engine
 app.use(express.static('public')); //use "public" directory as the assets directory
 app.use(bodyParser.urlencoded({extended:true})); // use body-parser package to parse the post data
 
-
+seeds();
 
 
 // camp.update({},{description:"Some quick example text to build on the card title and make up the bulk of the card's content."},      {multi:true},function (err,out) {
