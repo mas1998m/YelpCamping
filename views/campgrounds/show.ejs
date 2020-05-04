@@ -1,16 +1,51 @@
 <%- include('../partials/header')%>
-<h1>This is Camp <%= camp.name%></h1>
-<img src="<%=camp.image%>">
-<p><%=camp.description %></p>
+
+<section>
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-3">
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active">Info 1</a>
+                    <a href="#" class="list-group-item list-group-item-action">Info 2</a>
+                    <a href="#" class="list-group-item list-group-item-action">Info 3</a>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="card">
+                    <img class="card-img-top" src="<%=camp.image%>" alt="Card image cap">
+                    <div class="card-body">
+                        <h6 class="float-right">7$/Night</h6>
+                        <h5 class="card-title"><a href="#"><%= camp.name%></a></h5>
+                        <p class="card-text"><%=camp.description%></p>
+                    </div>
+                </div>
+
+                <div class="card bg-light my-4">
+                    <div class="card-header">
+                        <a class="btn btn-success float-right" href="/campgrounds/<%=camp._id%>/comments/new">Add New Comment</a>
+                        <h2>Comments</h2>
+                    </div>
+
+                    <%camp.comments.forEach(function (comment) {%>
+                    <div class="card-body">
+                        <h6 class="float-right"><%=comment.time.toDateString()%></h6>
+                        <h5 class="card-title"><%=comment.author%></h5>
+                        <p class="card-text"><%=comment.text%></p>
+                    </div>
+
+                    <%})%>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 
-<ul>
-    <%camp.comments.forEach(function (comment) {%>
-    <li>
-        <strong><%=comment.author%></strong> -
-        <%=comment.text%> -
-        <%=comment.time.toDateString()%>
-    </li>
-    <%})%>
-</ul>
+
+
+<!--<h1></h1>-->
+<!--<img src="">-->
+<!--<p></p>-->
+
+
 <%- include('../partials/footer')%>
