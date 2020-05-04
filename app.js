@@ -109,6 +109,21 @@ app.post("/campgrounds",function (req,res) {
 // =================================
 // Comments routes
 // =================================
+app.get("/campgrounds/:id/comments/new",function (req,res) {
+    camp.findById(req.params.id,function (err,foundCamp) {
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log(foundCamp);
+            res.render("comments/new",{camp:foundCamp});
+        }
+    })
+
+});
+
+
+
 
 
 
