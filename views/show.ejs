@@ -2,4 +2,15 @@
 <h1>This is Camp <%= camp.name%></h1>
 <img src="<%=camp.image%>">
 <p><%=camp.description %></p>
+
+
+<ul>
+    <%camp.comments.forEach(function (comment) {%>
+    <li>
+        <strong><%=comment.author%></strong> -
+        <%=comment.text%> -
+        <%=comment.time.toDateString()%>
+    </li>
+    <%})%>
+</ul>
 <%- include('partials/footer')%>

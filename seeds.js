@@ -1,5 +1,6 @@
 var mongoose = require("mongoose"),
-    camp = require("./models/camp");
+    camp = require("./models/camp"),
+    Comment = require("./models/comment");
 
 var data = [
     {
@@ -27,12 +28,26 @@ function seedsDB(){
         }
         else{
             data.forEach(function (element){
-                camp.create(element,function (err,created) {
+                camp.create(element,function (err,createdCamp) {
                     if(err){
                         console.log(err);
                     }
                     else {
-                        console.log("created");
+                        console.log("camp created");
+                        Comment.create({
+                            author:"Mohamed Abdullah",
+                            text:"Spent a week there and it was a nice camp <3"
+                        },function (err,createdComment) {
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                console.log("comment created");
+                                createdCamp.comments.push(createdComment);
+                                createdCamp.save();
+                                console.log("comment saved");
+                            }
+                        });
                     }
                 });
             });

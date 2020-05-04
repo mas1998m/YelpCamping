@@ -73,7 +73,7 @@ app.get("/campgrounds/new",function (req,res) {
 });
 
 app.get("/campgrounds/:id",function (req,res) {
-    camp.findById(req.params.id,function (err,result) {
+    camp.findById(req.params.id).populate("comments").exec(function (err,result){
         if(err){
             console.log(err);
         }
