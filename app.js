@@ -63,13 +63,13 @@ app.get("/campgrounds",function (req,res) {
         }
         else{
             console.log("succesfully found camps");
-            res.render("index",{camps:foundCamps});
+            res.render("campgrounds/index",{camps:foundCamps});
         }
     });
 });
 
 app.get("/campgrounds/new",function (req,res) {
-    res.render("new");
+    res.render("campgrounds/new");
 });
 
 app.get("/campgrounds/:id",function (req,res) {
@@ -79,7 +79,7 @@ app.get("/campgrounds/:id",function (req,res) {
         }
         else{
             console.log("Camp Found");
-            res.render("show",{camp:result});
+            res.render("campgrounds/show",{camp:result});
         }
     });
 });
@@ -104,6 +104,12 @@ app.post("/campgrounds",function (req,res) {
         }
     })
 });
+
+
+// =================================
+// Comments routes
+// =================================
+
 
 
 app.listen("3042",function () {
