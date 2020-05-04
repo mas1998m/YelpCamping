@@ -4,6 +4,7 @@ var request = require("request");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const camp = require("./models/camp");
+const comment= require("./models/comment");
 var seeds = require("./seeds");
 mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
     {
@@ -119,7 +120,27 @@ app.get("/campgrounds/:id/comments/new",function (req,res) {
             res.render("comments/new",{camp:foundCamp});
         }
     })
+});
 
+
+app.post("/campgrounds/:id/comments",function (req,res) {
+    comment.create(req.body.comment ,function (err,createdComment) {
+        if(err){
+            console.log(err);
+        }
+        else{
+            camp.findById(req.params.id,function (err,foundCamp) {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    foundCamp.comments.push(createdComment);
+                    foundCamp.save();
+                    res.redirect("/campgrounds/"+foundCamp._id);
+                }
+            });
+        }
+    } );
 });
 
 
