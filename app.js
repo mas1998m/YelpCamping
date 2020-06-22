@@ -3,8 +3,11 @@ var app = express();
 var request = require("request");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const passport = require ('passport');
+const localStrategy = require('passport-local');
 const camp = require("./models/camp");
 const comment= require("./models/comment");
+const user = require('./models/user');
 var seeds = require("./seeds");
 mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
     {
