@@ -10,6 +10,7 @@ const comment= require("./models/comment");
 const user = require('./models/user');
 var seeds = require("./seeds");
 const methodOverride = require("method-override");
+const middleware = require("./middleware");
 
 mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
     {
@@ -170,9 +171,9 @@ app.post("/campgrounds",isLoggedin,function (req,res) {
 });
 
 
-// =================================
-// Comments routes
-// =================================
+//==================================
+//=========Comments routes==========
+//==================================
 app.get("/campgrounds/:id/comments/new",isLoggedin,function (req,res) {
     camp.findById(req.params.id,function (err,foundCamp) {
         if(err){
@@ -212,7 +213,7 @@ app.post("/campgrounds/:id/comments",isLoggedin,function (req,res) {
     } );
 });
 
-app.get("/campgrounds/:campId/comments/:commentId/edit",function (req,res) {
+app.get("/campgrounds/:campId/comments/:commentId/edit",checkCommentOwnership,function (req,res) {
     comment.findById(req.params.commentId,function (err,foundComment) {
         if(err){
             console.log(err);
@@ -224,7 +225,7 @@ app.get("/campgrounds/:campId/comments/:commentId/edit",function (req,res) {
 
 });
 
-app.put("/campgrounds/:campId/comments/:commentId",function (req,res) {
+app.put("/campgrounds/:campId/comments/:commentId",checkCommentOwnership,function (req,res) {
     comment.findByIdAndUpdate(req.params.commentId,{text:req.body.comment.text},function (err,oldComment) {
         if(err){
             console.log(err);
@@ -236,7 +237,16 @@ app.put("/campgrounds/:campId/comments/:commentId",function (req,res) {
     });
 });
 
-
+app.delete("/campgrounds/:campId/comments/:commentId",checkCommentOwnership,function (req,res) {
+    comment.findByIdAndDelete(req.params.commentId,function (err,Comment) {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect("/campgrounds/"+req.params.campId);
+        }
+    });
+});
 
 //===================================
 //=======Authentication routes=======
@@ -298,6 +308,26 @@ function checkCampgroundOwnership(req,res,next){
                 else{
                     res.redirect("back");
                 }
+            }
+        });
+    }
+    else{
+        res.redirect("back");
+    }
+}
+
+function checkCommentOwnership(req,res,next){
+    if(req.isAuthenticated()){
+        comment.findById(req.params.commentId,function (err,foundComment) {
+            if(err){
+                console.log(err);
+                res.redirect("back");
+            }
+            else if(foundComment.author.id.equals(req.user._id)){
+                next();
+            }
+            else{
+                res.redirect("back");
             }
         });
     }

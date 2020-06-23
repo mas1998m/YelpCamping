@@ -40,7 +40,13 @@
                         <h6 class="float-right"><%=comment.time.toDateString()%></h6>
                         <h5 class="card-title"><%=comment.author.name%></h5>
                         <p class="card-text"><%=comment.text%></p>
+
+                        <%if(currentUser && comment.author.id.equals(currentUser._id)){%>
                         <a class="btn btn-warning" href="/campgrounds/<%=camp._id%>/comments/<%=comment._id%>/edit">Edit Comment</a>
+                        <form class="d-inline" action="/campgrounds/<%=camp._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete Comment</button>
+                        </form>
+                        <%}%>
                     </div>
 
                     <%})%>
