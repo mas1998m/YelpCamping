@@ -18,10 +18,14 @@
                         <h5 class="card-title"><a href="#"><%= camp.name%></a></h5>
                         <h6 class="float-right">Added By <%= camp.author.name%> on <%= camp.date.toDateString()%></h6>
                         <p class="card-text"><%=camp.description%></p>
-                        <a href="/campgrounds/<%=camp._id%>/edit" class="btn btn-warning">Edit Post</a>
-                        <form method="POST" action="/campgrounds/<%=camp._id%>?_method=DELETE" class="d-inline">
-                            <button class="btn btn-danger">Delete Post</button>
-                        </form>
+
+                        <% if(currentUser && camp.author.id.equals(currentUser._id)){%>
+                            <a href="/campgrounds/<%=camp._id%>/edit" class="btn btn-warning">Edit Post</a>
+                            <form method="POST" action="/campgrounds/<%=camp._id%>?_method=DELETE" class="d-inline">
+                                <button class="btn btn-danger">Delete Post</button>
+                            </form>
+                        <%}%>
+
                     </div>
                 </div>
 
@@ -36,6 +40,7 @@
                         <h6 class="float-right"><%=comment.time.toDateString()%></h6>
                         <h5 class="card-title"><%=comment.author.name%></h5>
                         <p class="card-text"><%=comment.text%></p>
+                        <a class="btn btn-warning" href="/campgrounds/<%=camp._id%>/comments/<%=comment._id%>/edit">Edit Comment</a>
                     </div>
 
                     <%})%>

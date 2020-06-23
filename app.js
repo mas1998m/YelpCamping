@@ -77,6 +77,10 @@ app.get("/",function (req,res) {
     res.render("landing");
 });
 
+
+//================================
+//======Campgrounds Routing=======
+//================================
 app.get("/campgrounds",function (req,res) {
     camp.find({},function (err,foundCamps) {
         if(err){
@@ -107,7 +111,7 @@ app.get("/campgrounds/:id",function (req,res) {
 });
 
 
-app.get("/campgrounds/:id/edit",function (req,res) {
+app.get("/campgrounds/:id/edit",checkCampgroundOwnership,function (req,res) {
     camp.findById(req.params.id,function (err,foundCamp) {
         if(err){
             console.log(err);
@@ -118,7 +122,7 @@ app.get("/campgrounds/:id/edit",function (req,res) {
     })
 });
 
-app.put("/campgrounds/:id",function (req,res) {
+app.put("/campgrounds/:id",checkCampgroundOwnership,function (req,res) {
     camp.findById(req.params.id,function (err,foundCamp) {
         foundCamp.name = req.body.name;
         foundCamp.image = req.body.image;
@@ -128,7 +132,7 @@ app.put("/campgrounds/:id",function (req,res) {
     res.redirect("/campgrounds/"+req.params.id);
 });
 
-app.delete("/campgrounds/:id",function (req,res) {
+app.delete("/campgrounds/:id",checkCampgroundOwnership,function (req,res) {
     camp.findByIdAndDelete(req.params.id,function (err,deletedCamp){
         if(err){
             console.log(err);
@@ -181,7 +185,6 @@ app.get("/campgrounds/:id/comments/new",isLoggedin,function (req,res) {
     })
 });
 
-
 app.post("/campgrounds/:id/comments",isLoggedin,function (req,res) {
     let data = {
         text:req.body.comment.text,
@@ -208,6 +211,36 @@ app.post("/campgrounds/:id/comments",isLoggedin,function (req,res) {
         }
     } );
 });
+
+app.get("/campgrounds/:campId/comments/:commentId/edit",function (req,res) {
+    comment.findById(req.params.commentId,function (err,foundComment) {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.render("comments/edit",{campId:req.params.campId,comment:foundComment});
+        }
+    });
+
+});
+
+app.put("/campgrounds/:campId/comments/:commentId",function (req,res) {
+    comment.findByIdAndUpdate(req.params.commentId,{text:req.body.comment.text},function (err,oldComment) {
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log(oldComment);
+            res.redirect("/campgrounds/"+req.params.campId);
+        }
+    });
+});
+
+
+
+//===================================
+//=======Authentication routes=======
+//===================================
 
 app.get("/register",function (req,res) {
     res.render('register');
@@ -251,7 +284,27 @@ function isLoggedin(req,res,next){
     res.redirect("/login");
 }
 
-
+function checkCampgroundOwnership(req,res,next){
+    if(req.isAuthenticated()){
+        camp.findById(req.params.id,function (err,foundCamp) {
+            if(err){
+                console.log(err);
+                res.redirect("back");
+            }
+            else{
+                if(foundCamp.author.id.equals(req.user._id)){
+                    next();
+                }
+                else{
+                    res.redirect("back");
+                }
+            }
+        });
+    }
+    else{
+        res.redirect("back");
+    }
+}
 
 app.listen("3042",function () {
     //test if the server is working
