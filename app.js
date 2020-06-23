@@ -10,7 +10,7 @@ const comment= require("./models/comment");
 const user = require('./models/user');
 var seeds = require("./seeds");
 const methodOverride = require("method-override");
-const middleware = require("./middleware");
+const middleware = require("./middleware/");
 
 mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
     {
@@ -95,7 +95,7 @@ app.get("/campgrounds",function (req,res) {
     });
 });
 
-app.get("/campgrounds/new",isLoggedin,function (req,res) {
+app.get("/campgrounds/new",middleware.isLoggedin,function (req,res) {
     res.render("campgrounds/new");
 });
 
@@ -112,7 +112,7 @@ app.get("/campgrounds/:id",function (req,res) {
 });
 
 
-app.get("/campgrounds/:id/edit",checkCampgroundOwnership,function (req,res) {
+app.get("/campgrounds/:id/edit",middleware.checkCampgroundOwnership,function (req,res) {
     camp.findById(req.params.id,function (err,foundCamp) {
         if(err){
             console.log(err);
@@ -123,7 +123,7 @@ app.get("/campgrounds/:id/edit",checkCampgroundOwnership,function (req,res) {
     })
 });
 
-app.put("/campgrounds/:id",checkCampgroundOwnership,function (req,res) {
+app.put("/campgrounds/:id",middleware.checkCampgroundOwnership,function (req,res) {
     camp.findById(req.params.id,function (err,foundCamp) {
         foundCamp.name = req.body.name;
         foundCamp.image = req.body.image;
@@ -133,7 +133,7 @@ app.put("/campgrounds/:id",checkCampgroundOwnership,function (req,res) {
     res.redirect("/campgrounds/"+req.params.id);
 });
 
-app.delete("/campgrounds/:id",checkCampgroundOwnership,function (req,res) {
+app.delete("/campgrounds/:id",middleware.checkCampgroundOwnership,function (req,res) {
     camp.findByIdAndDelete(req.params.id,function (err,deletedCamp){
         if(err){
             console.log(err);
@@ -144,7 +144,7 @@ app.delete("/campgrounds/:id",checkCampgroundOwnership,function (req,res) {
     });
 });
 
-app.post("/campgrounds",isLoggedin,function (req,res) {
+app.post("/campgrounds",middleware.isLoggedin,function (req,res) {
     //extract the form data and push it into the db
     var data ={
         name:req.body.name,
@@ -174,7 +174,7 @@ app.post("/campgrounds",isLoggedin,function (req,res) {
 //==================================
 //=========Comments routes==========
 //==================================
-app.get("/campgrounds/:id/comments/new",isLoggedin,function (req,res) {
+app.get("/campgrounds/:id/comments/new",middleware.isLoggedin,function (req,res) {
     camp.findById(req.params.id,function (err,foundCamp) {
         if(err){
             console.log(err);
@@ -186,7 +186,7 @@ app.get("/campgrounds/:id/comments/new",isLoggedin,function (req,res) {
     })
 });
 
-app.post("/campgrounds/:id/comments",isLoggedin,function (req,res) {
+app.post("/campgrounds/:id/comments",middleware.isLoggedin,function (req,res) {
     let data = {
         text:req.body.comment.text,
         author:{
@@ -213,7 +213,7 @@ app.post("/campgrounds/:id/comments",isLoggedin,function (req,res) {
     } );
 });
 
-app.get("/campgrounds/:campId/comments/:commentId/edit",checkCommentOwnership,function (req,res) {
+app.get("/campgrounds/:campId/comments/:commentId/edit",middleware.checkCommentOwnership,function (req,res) {
     comment.findById(req.params.commentId,function (err,foundComment) {
         if(err){
             console.log(err);
@@ -225,7 +225,7 @@ app.get("/campgrounds/:campId/comments/:commentId/edit",checkCommentOwnership,fu
 
 });
 
-app.put("/campgrounds/:campId/comments/:commentId",checkCommentOwnership,function (req,res) {
+app.put("/campgrounds/:campId/comments/:commentId",middleware.checkCommentOwnership,function (req,res) {
     comment.findByIdAndUpdate(req.params.commentId,{text:req.body.comment.text},function (err,oldComment) {
         if(err){
             console.log(err);
@@ -237,7 +237,7 @@ app.put("/campgrounds/:campId/comments/:commentId",checkCommentOwnership,functio
     });
 });
 
-app.delete("/campgrounds/:campId/comments/:commentId",checkCommentOwnership,function (req,res) {
+app.delete("/campgrounds/:campId/comments/:commentId",middleware.checkCommentOwnership,function (req,res) {
     comment.findByIdAndDelete(req.params.commentId,function (err,Comment) {
         if(err){
             console.log(err);
@@ -287,54 +287,7 @@ app.get("/logout",function (req,res) {
     res.redirect("/");
 });
 
-function isLoggedin(req,res,next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
-function checkCampgroundOwnership(req,res,next){
-    if(req.isAuthenticated()){
-        camp.findById(req.params.id,function (err,foundCamp) {
-            if(err){
-                console.log(err);
-                res.redirect("back");
-            }
-            else{
-                if(foundCamp.author.id.equals(req.user._id)){
-                    next();
-                }
-                else{
-                    res.redirect("back");
-                }
-            }
-        });
-    }
-    else{
-        res.redirect("back");
-    }
-}
-
-function checkCommentOwnership(req,res,next){
-    if(req.isAuthenticated()){
-        comment.findById(req.params.commentId,function (err,foundComment) {
-            if(err){
-                console.log(err);
-                res.redirect("back");
-            }
-            else if(foundComment.author.id.equals(req.user._id)){
-                next();
-            }
-            else{
-                res.redirect("back");
-            }
-        });
-    }
-    else{
-        res.redirect("back");
-    }
-}
 
 app.listen("3042",function () {
     //test if the server is working
