@@ -19,6 +19,9 @@
                         <h6 class="float-right">Added By <%= camp.author.name%> on <%= camp.date.toDateString()%></h6>
                         <p class="card-text"><%=camp.description%></p>
                         <a href="/campgrounds/<%=camp._id%>/edit" class="btn btn-warning">Edit Post</a>
+                        <form method="POST" action="/campgrounds/<%=camp._id%>?_method=DELETE" class="d-inline">
+                            <button class="btn btn-danger">Delete Post</button>
+                        </form>
                     </div>
                 </div>
 

@@ -119,7 +119,6 @@ app.get("/campgrounds/:id/edit",function (req,res) {
 });
 
 app.put("/campgrounds/:id",function (req,res) {
-    console.log( req.body.name);
     camp.findById(req.params.id,function (err,foundCamp) {
         foundCamp.name = req.body.name;
         foundCamp.image = req.body.image;
@@ -129,6 +128,16 @@ app.put("/campgrounds/:id",function (req,res) {
     res.redirect("/campgrounds/"+req.params.id);
 });
 
+app.delete("/campgrounds/:id",function (req,res) {
+    camp.findByIdAndDelete(req.params.id,function (err,deletedCamp){
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect("/campgrounds");
+        }
+    });
+});
 
 app.post("/campgrounds",isLoggedin,function (req,res) {
     //extract the form data and push it into the db
