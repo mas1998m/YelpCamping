@@ -16,6 +16,7 @@
                     <div class="card-body">
                         <h6 class="float-right">7$/Night</h6>
                         <h5 class="card-title"><a href="#"><%= camp.name%></a></h5>
+                        <h6 class="float-right">Added By <%= camp.author.name%> on <%= camp.date.toDateString()%></h6>
                         <p class="card-text"><%=camp.description%></p>
                     </div>
                 </div>
@@ -29,7 +30,7 @@
                     <%camp.comments.forEach(function (comment) {%>
                     <div class="card-body">
                         <h6 class="float-right"><%=comment.time.toDateString()%></h6>
-                        <h5 class="card-title"><%=comment.author%></h5>
+                        <h5 class="card-title"><%=comment.author.name%></h5>
                         <p class="card-text"><%=comment.text%></p>
                     </div>
 
