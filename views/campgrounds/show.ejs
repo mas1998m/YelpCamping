@@ -18,6 +18,7 @@
                         <h5 class="card-title"><a href="#"><%= camp.name%></a></h5>
                         <h6 class="float-right">Added By <%= camp.author.name%> on <%= camp.date.toDateString()%></h6>
                         <p class="card-text"><%=camp.description%></p>
+                        <a href="/campgrounds/<%=camp._id%>/edit" class="btn btn-warning">Edit Post</a>
                     </div>
                 </div>
 

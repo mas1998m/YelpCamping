@@ -9,6 +9,8 @@ const camp = require("./models/camp");
 const comment= require("./models/comment");
 const user = require('./models/user');
 var seeds = require("./seeds");
+const methodOverride = require("method-override");
+
 mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
     {
         useNewUrlParser: true,
@@ -22,6 +24,7 @@ mongoose.connection.on('connected',function () {
 app.set("view engine","ejs"); //set ejs as the default view engine
 app.use(express.static('public')); //use "public" directory as the assets directory
 app.use(bodyParser.urlencoded({extended:true})); // use body-parser package to parse the post data
+app.use(methodOverride('_method'));
 
 //seeds();
 app.use(require('express-session')({
@@ -39,6 +42,8 @@ app.use(function (req,res,next) {
 passport.use(new localStrategy(user.authenticate()));
 passport.serializeUser(user.serializeUser());
 passport.deserializeUser(user.deserializeUser());
+
+
 // camp.update({},{description:"Some quick example text to build on the card title and make up the bulk of the card's content."},      {multi:true},function (err,out) {
 //     if(err){
 //         console.log("error happened");
@@ -99,6 +104,29 @@ app.get("/campgrounds/:id",function (req,res) {
             res.render("campgrounds/show",{camp:result});
         }
     });
+});
+
+
+app.get("/campgrounds/:id/edit",function (req,res) {
+    camp.findById(req.params.id,function (err,foundCamp) {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.render('campgrounds/edit',{camp:foundCamp});
+        }
+    })
+});
+
+app.put("/campgrounds/:id",function (req,res) {
+    console.log( req.body.name);
+    camp.findById(req.params.id,function (err,foundCamp) {
+        foundCamp.name = req.body.name;
+        foundCamp.image = req.body.image;
+        foundCamp.description = req.body.description;
+        foundCamp.save();
+    });
+    res.redirect("/campgrounds/"+req.params.id);
 });
 
 
