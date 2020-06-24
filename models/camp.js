@@ -8,6 +8,7 @@ const campSchema = new mongoose.Schema({
     image:String,
     description:String,
     date:{type:Date,default: Date.now()},
+    price:Number,
     author:{
         id:{
             type: mongoose.Schema.Types.ObjectId,

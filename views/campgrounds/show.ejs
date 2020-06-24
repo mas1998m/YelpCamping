@@ -1,22 +1,24 @@
-<%- include('../partials/header')%>
+<% var rootPath='../;'%>
+
+<%- include('../partials/header',{rootPath:rootPath});%>
 
 <section>
     <div class="container">
         <div class="row my-3">
-            <div class="col-3">
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active">Info 1</a>
-                    <a href="#" class="list-group-item list-group-item-action">Info 2</a>
-                    <a href="#" class="list-group-item list-group-item-action">Info 3</a>
-                </div>
-            </div>
-            <div class="col-9">
+<!--            <div class="col-3">-->
+<!--                <div class="list-group">-->
+<!--                    <a href="#" class="list-group-item list-group-item-action active">Info 1</a>-->
+<!--                    <a href="#" class="list-group-item list-group-item-action">Info 2</a>-->
+<!--                    <a href="#" class="list-group-item list-group-item-action">Info 3</a>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="col-9 mx-auto">
                 <div class="card">
                     <img class="card-img-top" src="<%=camp.image%>" alt="Card image cap">
                     <div class="card-body">
-                        <h6 class="float-right">7$/Night</h6>
+                        <h6 class="float-right"><%=camp.price%>$/Night</h6>
                         <h5 class="card-title"><a href="#"><%= camp.name%></a></h5>
-                        <h6 class="float-right">Added By <%= camp.author.name%> on <%= camp.date.toDateString()%></h6>
+                        <h6 class="float-right">Added By <strong><%= camp.author.name%></strong> on <%= camp.date.toDateString()%></h6>
                         <p class="card-text"><%=camp.description%></p>
 
                         <% if(currentUser && camp.author.id.equals(currentUser._id)){%>
@@ -56,12 +58,6 @@
     </div>
 </section>
 
-
-
-
-<!--<h1></h1>-->
-<!--<img src="">-->
-<!--<p></p>-->
 
 
 <%- include('../partials/footer')%>
