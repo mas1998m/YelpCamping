@@ -13,7 +13,7 @@ const methodOverride = require("method-override");
 const middleware = require("./middleware/");
 const flash = require("connect-flash");
 const dbURL = process.env.DATABASEURL||'mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority';
-const PORT = process.env.PORT;
+const PORT = process.env.PORT||'5000';
 
 
 mongoose.connect(dbURL,
