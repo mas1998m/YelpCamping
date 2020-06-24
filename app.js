@@ -12,8 +12,11 @@ var seeds = require("./seeds");
 const methodOverride = require("method-override");
 const middleware = require("./middleware/");
 const flash = require("connect-flash");
+const dbURL = process.env.DATABASEURL||'mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority';
+const PORT = process.env.PORT;
 
-mongoose.connect('mongodb+srv://mohamed:mo01121823018@cluster0-e58to.mongodb.net/test?retryWrites=true&w=majority',
+
+mongoose.connect(dbURL,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -286,7 +289,7 @@ app.get("/logout",function (req,res) {
 
 
 
-app.listen("3042",function () {
+app.listen(PORT,process.env.IP,function () {
     //test if the server is working
     console.log("Listening Now");
 });
