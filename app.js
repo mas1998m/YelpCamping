@@ -291,5 +291,6 @@ app.get("/logout",function (req,res) {
 
 app.listen(PORT,process.env.IP,function () {
     //test if the server is working
-    console.log("Listening Now");
+    console.log("Listening Now on Port "+ PORT);
+    console.log(process.env.test);
 });
