@@ -56,6 +56,24 @@ app.get("/",function (req,res) {
 });
 
 
+
+
+
+//================================
+//======Terms & Privacy Routing=======
+//================================
+app.get("/terms",function (req,res) {
+    res.render("terms");
+});
+
+app.get("/privacy",function (req,res) {
+    res.render("privacy");
+});
+
+
+
+
+
 //================================
 //======Campgrounds Routing=======
 //================================
